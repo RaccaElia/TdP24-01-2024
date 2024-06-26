@@ -20,6 +20,7 @@ class Controller:
         self._view._ddyear.options = list(map(lambda x: ft.dropdown.Option(x), anni))
 
     def handle_graph(self, e):
+        self._view.txtOut.controls.clear()
         anno = int(self._view._ddyear.value)
         metodo = int(self._view._ddmethod.value)
         if float(self._view._txtSoglia.value) < 0:
@@ -31,6 +32,13 @@ class Controller:
         self._model.creaGrafo(anno, metodo, soglia)
 
         self._view.txtOut.controls.append(ft.Text(f"nodi: {self._model.grafoDetails()[0]}, archi {self._model.grafoDetails()[1]}"))
+        i = 0
+        for nodo in self._model.top5Nodi():
+            if i < 5:
+                self._view.txtOut.controls.append(ft.Text(f"Prodotto {nodo[1][0]}: {nodo[0]} archi entranti e {nodo[1][1]} di ricavo"))
+            else:
+                break
+            i += 1
         self._view.update_page()
 
     def handle_search(self, e):
